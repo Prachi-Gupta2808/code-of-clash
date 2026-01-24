@@ -13,10 +13,12 @@ services:
     tty: true
     depends_on:
       - backend
-
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
   backend:
     build: ./backend
     container_name: mern_backend
+    working_dir: /app
     ports:
       - "5000:5000"
     volumes:
@@ -24,3 +26,5 @@ services:
       - /app/node_modules
     env_file:
       - ./backend/.env
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
