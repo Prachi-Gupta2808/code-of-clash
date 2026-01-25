@@ -12,12 +12,11 @@ const activeDaySchema = new mongoose.Schema(
       default: 1,
     },
     date: {
-      type: Date,
+      type: string,
       required: true,
-      set: (d) => new Date(new Date(d).setHours(0, 0, 0, 0)),
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 activeDaySchema.index({ userId: 1, date: 1 }, { unique: true });

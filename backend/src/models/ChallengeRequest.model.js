@@ -18,15 +18,19 @@ const challengeRequestSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      default: "Pending",
+      enum: ["pending", "accepted", "rejected"],
+      default: "pending",
     },
     expiresAt: {
       type: Date,
-      required: true
-    }
+      required: true,
+    },
   },
-  {timestamps : true},
+  { timestamps: true }
 );
 
-const challengeRequestModel = mongoose.model("ChallengeRequest" , challengeRequestSchema) ;
-module.exports = challengeRequestModel ;
+const challengeRequestModel = mongoose.model(
+  "ChallengeRequest",
+  challengeRequestSchema
+);
+module.exports = challengeRequestModel;
