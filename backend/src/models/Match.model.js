@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-
+const mongoose = require("mongoose");
 const matchSchema = new mongoose.Schema(
   {
     player1: {
@@ -17,8 +16,12 @@ const matchSchema = new mongoose.Schema(
       ref: "User",
     },
     theme: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Theme",
+      type: String,
+      required: true
+    },
+    isChallenged: {
+      type: Boolean,
+      required: true,
     },
     submissionHistoryP1: [
       {
@@ -43,8 +46,8 @@ const matchSchema = new mongoose.Schema(
       p2: Number,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-const Match = mongoose.model("Match", matchSchema);
-export default Match;
+const MatchModel = mongoose.model("Match", matchSchema);
+module.exports =  MatchModel;

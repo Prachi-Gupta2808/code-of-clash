@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const friendRequestSchema = new mongoose.Schema(
   {
@@ -18,8 +18,8 @@ const friendRequestSchema = new mongoose.Schema(
       default: "pending",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-const FriendRequest = mongoose.model("FriendRequest", friendRequestSchema);
-export default FriendRequest;
+const FriendRequestModel = mongoose.model("FriendRequest", friendRequestSchema);
+module.exports = FriendRequestModel;
