@@ -10,8 +10,8 @@ const sanitizeUser = (user) => {
   return obj;
 };
 
-const createToken = (userId) => {
-  return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
+const createToken = (userId , isAdmin) => {
+  return jwt.sign({ id: userId , admin: isAdmin }, process.env.JWT_SECRET, {
     expiresIn: "7d",
   });
 };
@@ -70,7 +70,7 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const token = createToken(user._id);
+    const token = createToken(user._id , user.isAdmin);
     setTokenCookie(res, token);
 
     res.json({

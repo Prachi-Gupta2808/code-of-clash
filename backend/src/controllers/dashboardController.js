@@ -9,7 +9,7 @@ exports.getFriends = async (req, res) => {
   try {
     const user = await User.findById(req.user.id)
       .select("friendList")
-      .populate("friendList", "username fullName title rating");
+      .populate("friendList", "username fullName title rating avatar");
 
     res.status(200).json(user.friendList);
   } catch (error) {
@@ -116,7 +116,7 @@ exports.getFriendRequests = async (req, res) => {
     const incomingReqs = await FriendRequest.find({
       toUser: req.user.id,
       status: "pending",
-    }).populate("fromUser", "username fullName title rating");
+    }).populate("fromUser", "username fullName title rating avatar");
 
     const acceptedReqs = await FriendRequest.find({
       fromUser: req.user.id,
@@ -137,7 +137,7 @@ exports.getPendingFriendReqs = async (req, res) => {
     const outgoingRequests = await FriendRequest.find({
       fromUser: req.user.id,
       status: "pending",
-    }).populate("toUser", "username fullName title rating");
+    }).populate("toUser", "username fullName title rating avatar");
 
     res.status(200).json(outgoingRequests);
   } catch (error) {

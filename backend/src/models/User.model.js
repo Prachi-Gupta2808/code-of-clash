@@ -69,6 +69,14 @@ const userSchema = new mongoose.Schema(
       },
     ],
     stats: statsSchema,
+    avatar: {
+      type: String,
+      default: "https://riqieznxfrbdfcyfoxss.supabase.co/storage/v1/object/public/avatars/defaultPic.webp"
+    },
+    isAdmin : {
+      type: Boolean,
+      default: false
+    }
   },
   {
     timestamps: true,

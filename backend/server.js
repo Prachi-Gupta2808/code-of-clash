@@ -4,6 +4,7 @@ dotenv.config();
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const { protect } = require("./src/middlewares/authMiddleware.js") ;
 
 const app = express();
 
@@ -11,6 +12,7 @@ require("./src/libs/db.js");
 
 // Import Routes
 const authRoutes = require("./src/routes/authRoutes");
+const { uploadAvatar } = require("./src/controllers/uploadController.js");
 
 const PORT = process.env.PORT || 5000;
 
@@ -29,6 +31,7 @@ app.use(
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.post("/api/upload/avatar", protect , uploadAvatar) ;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
