@@ -10,8 +10,8 @@ const sanitizeUser = (user) => {
   return obj;
 };
 
-const createToken = (userId , isAdmin) => {
-  return jwt.sign({ id: userId , admin: isAdmin }, process.env.JWT_SECRET, {
+const createToken = (userId, isAdmin) => {
+  return jwt.sign({ id: userId, admin: isAdmin }, process.env.JWT_SECRET, {
     expiresIn: "7d",
   });
 };
@@ -19,10 +19,19 @@ const createToken = (userId , isAdmin) => {
 const setTokenCookie = (res, token) => {
   res.cookie("token", token, {
     httpOnly: true,
-    secure: true,
-    sameSite: "None",
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
+};
+
+// GET /api/auth/me
+exports.getMe = async (req, res) => {
+  try {
+    res.status(200).json({ user: req.user });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 // SIGNUP
@@ -43,7 +52,7 @@ exports.signup = async (req, res) => {
       authProvider: "local",
     });
 
-    const token = createToken(user._id);
+    const token = createToken(user._id, user.isAdmin);
     setTokenCookie(res, token);
 
     res.status(201).json({
@@ -70,7 +79,7 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const token = createToken(user._id , user.isAdmin);
+    const token = createToken(user._id, user.isAdmin);
     setTokenCookie(res, token);
 
     res.json({
@@ -85,14 +94,12 @@ exports.login = async (req, res) => {
 // GOOGLE AUTH
 exports.googleAuth = async (req, res) => {
   try {
-    const { credential } = req.body;
-
-    if (!credential) {
-      return res.status(400).json({ message: "Google credential missing" });
-    }
+    const { token } = req.body;
+    if (!token)
+      return res.status(400).json({ message: "Google token missing" });
 
     const ticket = await client.verifyIdToken({
-      idToken: credential,
+      idToken: token,
       audience: process.env.GOOGLE_CLIENT_ID,
     });
 
@@ -115,15 +122,15 @@ exports.googleAuth = async (req, res) => {
       await user.save();
     }
 
-    const token = createToken(user._id);
-    setTokenCookie(res, token);
+    const jwtToken = createToken(user._id, user.isAdmin);
+    setTokenCookie(res, jwtToken);
 
-    res.json({
-      message: "Google auth successful",
-      user: sanitizeUser(user),
-    });
-  } catch (error) {
-    res.status(401).json({ message: "Google authentication failed" });
+    res.json({ message: "Google auth successful", user: sanitizeUser(user) });
+  } catch (err) {
+    console.error(err);
+    res
+      .status(401)
+      .json({ message: err.message || "Google authentication failed" });
   }
 };
 
@@ -131,8 +138,8 @@ exports.googleAuth = async (req, res) => {
 exports.logout = (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
-    secure: true,
-    sameSite: "None",
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
     path: "/",
   });
 
