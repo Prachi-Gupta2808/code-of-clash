@@ -1,7 +1,27 @@
+"use client";
 import axios from "axios";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Dashboard = ({ user , setUser }) => {
+import { cn } from "@/lib/utils";
+import {
+  IconArrowLeft,
+  IconBell,
+  IconHistory,
+  IconUserBolt,
+  IconUsers,
+} from "@tabler/icons-react";
+import { motion } from "motion/react";
+import { Sidebar, SidebarBody, SidebarLink } from "../components/ui/sidebar";
+
+import FriendsSection from "./DashboardSections/FriendsSection";
+import MatchSection from "./DashboardSections/MatchSection";
+import NotificationSection from "./DashboardSections/NotificationSection";
+import ProfileSection from "./DashboardSections/ProfileSection";
+
+const Dashboard = ({ user, setUser }) => {
+  const [open, setOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("profile");
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -9,29 +29,111 @@ const Dashboard = ({ user , setUser }) => {
       await axios.post(
         "http://localhost:5000/api/auth/logout",
         {},
-        { withCredentials: true },
+        { withCredentials: true }
       );
-
       localStorage.removeItem("user");
-      setUser(null) ;
+      setUser(null);
       navigate("/login");
     } catch (err) {
       console.error("Logout failed:", err);
-      alert("Logout failed");
     }
   };
 
+  const links = [
+    {
+      label: "Profile",
+      icon: <IconUserBolt className="h-5 w-5" />,
+      onClick: () => setActiveSection("profile"),
+    },
+    {
+      label: "Friends",
+      icon: <IconUsers className="h-5 w-5" />,
+      onClick: () => setActiveSection("friends"),
+    },
+    {
+      label: "Notifications",
+      icon: <IconBell className="h-5 w-5" />,
+      onClick: () => setActiveSection("notifications"),
+    },
+    {
+      label: "Matches History",
+      icon: <IconHistory className="h-5 w-5" />,
+      onClick: () => setActiveSection("matches"),
+    },
+    {
+      label: "Logout",
+      icon: <IconArrowLeft className="h-5 w-5 text-red-500" />,
+      onClick: handleLogout,
+    },
+  ];
+
   return (
-    <div className="p-10">
-      <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-      <button
-        onClick={handleLogout}
-        className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors"
-      >
-        Logout
-      </button>
+    <div
+      className={cn(
+        "flex h-screen w-full overflow-hidden bg-gray-100 dark:bg-neutral-900"
+      )}
+    >
+      <Sidebar open={open} setOpen={setOpen}>
+        <SidebarBody className="justify-between gap-6">
+          <div className="flex flex-col gap-2">
+            {open ? <Logo /> : <LogoIcon />}
+
+            <div className="mt-4 flex flex-col gap-2">
+              {links.map((link, idx) => (
+                <SidebarLink key={idx} link={link} />
+              ))}
+            </div>
+          </div>
+        </SidebarBody>
+      </Sidebar>
+
+      {/* MAIN CONTENT */}
+      <div className="flex flex-1 p-8 overflow-y-auto">
+        <motion.div
+          key={activeSection}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.25 }}
+          className="w-full"
+        >
+          {activeSection === "profile" && <ProfileSection user={user} />}
+          {activeSection === "friends" && <FriendsSection />}
+          {activeSection === "notifications" && <NotificationSection />}
+          {activeSection === "matches" && <MatchSection />}
+        </motion.div>
+      </div>
     </div>
   );
 };
 
 export default Dashboard;
+
+/* ================= LOGO ================= */
+
+const Logo = () => (
+  <div className="flex items-center gap-3 text-white">
+    <img
+      src="/logo.png"
+      alt="Clash Of Code"
+      className="h-13 w-13 object-contain"
+    />
+    <motion.span
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="font-semibold"
+    >
+      Clash Of Code
+    </motion.span>
+  </div>
+);
+
+const LogoIcon = () => (
+  <motion.img
+    src="/logo.png"
+    alt="Clash Of Code"
+    className="h-12 w-12 object-contain mx-auto"
+    initial={{ scale: 0.9 }}
+    animate={{ scale: 1 }}
+    transition={{ duration: 0.2 }}
+  />
+);

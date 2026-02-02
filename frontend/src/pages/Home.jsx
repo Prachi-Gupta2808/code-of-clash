@@ -48,7 +48,6 @@ const Home = ({ user, setUser }) => {
 
   return (
     <div className="w-full h-screen relative bg-transparent overflow-x-hidden overflow-y-auto">
-      {/* ================= HERO ================= */}
       <div className="top-container mb-25">
         <div className="hero w-full h-screen flex justify-center items-center relative">
           {/* Heading */}
@@ -164,7 +163,6 @@ const Home = ({ user, setUser }) => {
           </div>
         </div>
 
-        {/* ================= PLAY CTA ================= */}
         <div className="lower flex flex-col items-center absolute bottom-10 w-full gap-5 z-10">
           <button
             className="bg-(--c4) hover:bg-(--c3) duration-300
