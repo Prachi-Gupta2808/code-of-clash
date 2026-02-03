@@ -7,23 +7,17 @@ const friendRequests = [
   {
     from: "Divyanshi",
     avatar1:
-      "https://images.unsplash.com/photo-1607746882042-944635dfe10e?q=80&w=2560&auto=format&fit=crop",
-    avatar2:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=2560&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1607746882042-944635dfe10e?q=80&w=2560&auto=format&fit=crop"
   },
   {
     from: "Ankur",
     avatar1:
-      "https://images.unsplash.com/photo-1502767089025-6572583495b4?q=80&w=2560&auto=format&fit=crop",
-    avatar2:
-      "https://images.unsplash.com/photo-1607746882042-944635dfe10e?q=80&w=2560&auto=format&fit=crop",
+      "https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
   },
   {
     from: "Riya",
     avatar1:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=2560&auto=format&fit=crop",
-    avatar2:
-      "https://images.unsplash.com/photo-1502767089025-6572583495b4?q=80&w=2560&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=2560&auto=format&fit=crop"
   },
 ];
 
@@ -40,7 +34,7 @@ const challengeRequests = [
     from: "Ankit",
     theme: "Dynamic Programming",
     avatar1:
-      "https://images.unsplash.com/photo-1502767089025-6572583495b4?q=80&w=2560&auto=format&fit=crop",
+      "https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     avatar2:
       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=2560&auto=format&fit=crop",
   },
@@ -50,7 +44,7 @@ const challengeRequests = [
     avatar1:
       "https://images.unsplash.com/photo-1607746882042-944635dfe10e?q=80&w=2560&auto=format&fit=crop",
     avatar2:
-      "https://images.unsplash.com/photo-1502767089025-6572583495b4?q=80&w=2560&auto=format&fit=crop",
+      "https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
 ];
 
@@ -60,12 +54,12 @@ const NotificationSection = () => {
   const data = activeTab === "friends" ? friendRequests : challengeRequests;
 
   return (
-    <div className="w-full max-w-[1200px] mx-auto px-4 py-12">
+    <div className="w-full max-w-300 mx-auto px-4 py-12">
       {/* TOGGLE */}
       <div className="flex justify-center mb-8 gap-4">
         <button
           onClick={() => setActiveTab("friends")}
-          className={`px-6 py-2 rounded-xl font-semibold transition-all
+          className={`px-6 py-2 rounded-xl font-semibold transition-all cursor-pointer
             ${
               activeTab === "friends"
                 ? "bg-(--c4) text-white"
@@ -77,7 +71,7 @@ const NotificationSection = () => {
 
         <button
           onClick={() => setActiveTab("challenges")}
-          className={`px-6 py-2 rounded-xl font-semibold transition-all
+          className={`px-6 py-2 rounded-xl font-semibold transition-all cursor-pointer
             ${
               activeTab === "challenges"
                 ? "bg-(--c4) text-white"
@@ -95,7 +89,7 @@ const NotificationSection = () => {
             <CardBody
               className="
                 bg-gray-50 dark:bg-black
-                border border-black/[0.1] dark:border-white/[0.15]
+                border border-black/10 dark:border-white/15
                 rounded-xl p-6
                 w-full h-full
               "
@@ -103,7 +97,7 @@ const NotificationSection = () => {
               {/* AVATARS — CENTERED & BIG */}
               <CardItem translateZ={80} className="mt-6">
                 <div className="flex justify-center">
-                  <div className="relative w-[96px] h-[48px]">
+                  <div className="relative w-24 h-12">
                     <img
                       src={item.avatar1}
                       alt=""
@@ -112,14 +106,14 @@ const NotificationSection = () => {
                         absolute left-0 shadow-lg
                       "
                     />
-                    <img
+                    {(activeTab !== "friends") ? (<img
                       src={item.avatar2}
                       alt=""
                       className="
                         w-14 h-14 rounded-full object-cover
                         absolute left-8 shadow-lg
                       "
-                    />
+                    />) : ""}
                   </div>
                 </div>
               </CardItem>
@@ -146,7 +140,7 @@ const NotificationSection = () => {
                   className="
                     px-4 py-2 rounded-xl text-sm font-semibold
                     bg-(--c4) text-white
-                    hover:bg-(--c3) transition
+                    hover:bg-(--c3) transition cursor-pointer
                   "
                 >
                   Accept
@@ -158,7 +152,7 @@ const NotificationSection = () => {
                   className="
                     px-4 py-2 rounded-xl text-sm font-semibold
                     border border-red-400 text-red-400
-                    hover:bg-red-400 hover:text-white transition
+                    hover:bg-red-400 hover:text-white transition cursor-pointer
                   "
                 >
                   Reject

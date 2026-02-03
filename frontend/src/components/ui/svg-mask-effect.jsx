@@ -38,34 +38,37 @@ export const MaskContainer = ({
     };
   }, []);
 
-  const maskSize = isHovered ? revealSize : size;
+  // Calculate mask size: If hovered, use revealSize. 
+  // If not hovered, shrink to 0 (to make it disappear smoothly).
+  const maskSize = isHovered ? revealSize : 0;
 
   return (
     <motion.div
       ref={containerRef}
       className={cn("relative h-screen", className)}
     >
-      {/* Only show the masked cursor div when hovered */}
-      {isHovered && (
-        <motion.div
-          className="absolute flex h-full w-full items-center justify-center bg-black text-6xl [mask-image:url(/mask.svg)] [mask-repeat:no-repeat] [mask-size:40px] dark:bg-white"
-          animate={{
-            maskPosition: `${mousePosition.x - maskSize / 2}px ${
-              mousePosition.y - maskSize / 2
-            }px`,
-            maskSize: `${maskSize}px`,
-          }}
-          transition={{
-            maskSize: { duration: 0.3, ease: "easeInOut" },
-            maskPosition: { duration: 0.15, ease: "linear" },
-          }}
-        >
-          <div className="absolute inset-0 z-0 h-full w-full bg-black opacity-50 dark:bg-white" />
-          <div className="relative z-20 mx-auto max-w-4xl text-center text-4xl font-bold">
-            {children}
-          </div>
-        </motion.div>
-      )}
+      {/* REMOVED: {isHovered && (...)} 
+        We keep this rendered always so it can animate to size 0 when isHovered becomes false.
+      */}
+      <motion.div
+        className="absolute flex h-full w-full items-center justify-center bg-black text-6xl [mask-image:url(/mask.svg)] [mask-repeat:no-repeat] [mask-size:40px] dark:bg-white"
+        animate={{
+          // When maskSize becomes 0, this effectively hides the layer
+          maskPosition: `${mousePosition.x - maskSize / 2}px ${
+            mousePosition.y - maskSize / 2
+          }px`,
+          maskSize: `${maskSize}px`,
+        }}
+        transition={{
+          maskSize: { duration: 0.3, ease: "easeInOut" },
+          maskPosition: { duration: 0.15, ease: "linear" },
+        }}
+      >
+        <div className="absolute inset-0 z-0 h-full w-full bg-black opacity-50 dark:bg-white" />
+        <div className="relative z-20 mx-auto max-w-4xl text-center text-4xl font-bold">
+          {children}
+        </div>
+      </motion.div>
 
       <div className="flex h-full w-full items-center justify-center">
         {revealText}

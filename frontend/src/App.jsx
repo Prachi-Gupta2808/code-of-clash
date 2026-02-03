@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import ThemeSelect from "./pages/ThemeSelect";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -58,6 +59,14 @@ function App() {
           <Route
             path="/dashboard"
             element={<Dashboard user={user} setUser={setUser} />}
+          />
+          <Route
+            path="/theme"
+            element={<ThemeSelect user={user} setUser={setUser} />}
+          />
+          <Route
+            path="/lobby/:mode"
+            element={<ThemeSelect user={user} setUser={setUser} />}
           />
         </Route>
       </Routes>

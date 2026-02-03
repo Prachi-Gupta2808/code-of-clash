@@ -10,16 +10,16 @@ const dummyMatches = [
       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=2560&auto=format&fit=crop",
     avatar2:
       "https://images.unsplash.com/photo-1607746882042-944635dfe10e?q=80&w=2560&auto=format&fit=crop",
-    theme: "Binary Search",
+    theme: "Code Knockout",
   },
   {
     player1: "Divyanshi",
     player2: "Riya",
     avatar1:
-      "https://images.unsplash.com/photo-1502767089025-6572583495b4?q=80&w=2560&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=2560&auto=format&fit=crop",
     avatar2:
       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=2560&auto=format&fit=crop",
-    theme: "Dynamic Programming",
+    theme: "Output Rush",
   },
   {
     player1: "Neha",
@@ -27,14 +27,14 @@ const dummyMatches = [
     avatar1:
       "https://images.unsplash.com/photo-1607746882042-944635dfe10e?q=80&w=2560&auto=format&fit=crop",
     avatar2:
-      "https://images.unsplash.com/photo-1502767089025-6572583495b4?q=80&w=2560&auto=format&fit=crop",
-    theme: "Graphs",
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=2560&auto=format&fit=crop",
+    theme: "Complexity Clash",
   },
 ];
 
 const MatchSection = () => {
   return (
-    <div className="w-full max-w-[1200px] mx-auto px-4 py-12">
+    <div className="w-full max-w-300 mx-auto px-4 py-12">
       <h2 className="text-3xl font-bold text-center mb-8 text-white">
         Recent Matches
       </h2>
@@ -42,9 +42,9 @@ const MatchSection = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {dummyMatches.map((match, index) => (
           <CardContainer key={index} className="w-full">
-            <CardBody className="bg-gray-50 dark:bg-black border border-black/[0.1] dark:border-white/[0.15] rounded-xl p-6 w-full h-full">
+            <CardBody className="bg-gray-50 dark:bg-black border border-black/10dark:border-white/[0.15] rounded-xl p-6 w-full h-full">
               <CardItem translateZ={80} className="mt-6">
-                <div className="flex justify-center relative w-[96px] h-[48px]">
+                <div className="flex justify-center relative w-24 h-12">
                   <img
                     src={match.avatar1}
                     alt={match.player1}
@@ -82,7 +82,7 @@ const MatchSection = () => {
                   className="
                     px-4 py-2 rounded-xl text-sm font-semibold
                     bg-(--c4) text-white
-                    hover:bg-(--c3) transition
+                    hover:bg-(--c3) transition cursor-pointer
                   "
                 >
                   Submission History

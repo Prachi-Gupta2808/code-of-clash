@@ -71,7 +71,7 @@ const Home = ({ user, setUser }) => {
           {/* Spline */}
           <div className="robot w-full h-full relative mt-22 z-10">
             <spline-viewer url="https://prod.spline.design/w1QjstIemdP3Q4nn/scene.splinecode"></spline-viewer>
-            <div className="absolute w-40 h-20 bottom-20 right-10 md:bottom-0 md:right-0 bg-[#0C0C0C]" />
+            <div className="absolute w-40 h-20 bottom-20 right-10 md:bottom-0 md:right-0 bg-[#0C0C0C] z-10" />
           </div>
 
           {/* ================= PROFILE / AUTH ================= */}
@@ -117,16 +117,6 @@ const Home = ({ user, setUser }) => {
                       className="w-full text-left px-4 py-2 text-white hover:bg-white/10"
                       onClick={() => {
                         setProfileOpen(false);
-                        navigate("/notifications");
-                      }}
-                    >
-                      Notifications
-                    </button>
-
-                    <button
-                      className="w-full text-left px-4 py-2 text-white hover:bg-white/10"
-                      onClick={() => {
-                        setProfileOpen(false);
                         navigate("/contact");
                       }}
                     >
@@ -147,13 +137,13 @@ const Home = ({ user, setUser }) => {
             ) : (
               <div className="flex gap-10">
                 <button
-                  className="text-white poppins-bold-italic text-xl"
+                  className="text-white poppins-bold-italic text-xl duration-300 hover:bg-white hover:text-black px-4 py-3 rounded-xl cursor-pointer"
                   onClick={() => navigate("/login")}
                 >
                   Login
                 </button>
                 <button
-                  className="bg-(--c4) text-white px-4 py-3 text-xl poppins-bold-italic rounded-xl"
+                  className="bg-(--c4) text-white px-4 py-3 text-xl poppins-bold-italic rounded-xl cursor-pointer duration-300 hover:bg-(--c3)"
                   onClick={() => navigate("/signup")}
                 >
                   SignUp
@@ -168,7 +158,7 @@ const Home = ({ user, setUser }) => {
             className="bg-(--c4) hover:bg-(--c3) duration-300
               text-white px-4 py-3 text-2xl poppins-bold-italic rounded-xl
               flex gap-2 items-center
-              shadow-[0_0_20px_rgba(242,97,63,0.6)]"
+              shadow-[0_0_20px_rgba(242,97,63,0.6)] cursor-pointer"
             onClick={() => navigate(isLoggedIn ? "/play" : "/login")}
           >
             <FaPlay className="text-[20px]" />
@@ -188,7 +178,7 @@ const Home = ({ user, setUser }) => {
       <div className="relative w-full min-h-screen">
         <MaskContainer
           revealText={
-            <p className="text-center text-[50px] max-w-[1000px] font-semibold text-black dark:text-white">
+            <p className="text-center text-[50px] max-w-250 font-semibold text-black dark:text-white">
               Sharpen thinking under{" "}
               <span style={{ color: "#F2613F" }}>pressure</span> with{" "}
               <span style={{ color: "#F2613F" }}>live duels</span> and{" "}
@@ -199,7 +189,7 @@ const Home = ({ user, setUser }) => {
           revealSize={500}
           className="flex items-center justify-center"
         >
-          <div className="space-y-10 text-[50px] max-w-[1000px]">
+          <div className="space-y-10 text-[50px] max-w-250">
             Skip long contests — jump into a{" "}
             <span className="font-bold text-(--c4)">quick duel</span> and win
             fast.

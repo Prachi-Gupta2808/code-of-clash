@@ -18,11 +18,12 @@ import FriendsSection from "./DashboardSections/FriendsSection";
 import MatchSection from "./DashboardSections/MatchSection";
 import NotificationSection from "./DashboardSections/NotificationSection";
 import ProfileSection from "./DashboardSections/ProfileSection";
+import { MdLogout } from "react-icons/md";
 
 const Dashboard = ({ user, setUser }) => {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("profile");
-  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
@@ -62,7 +63,7 @@ const Dashboard = ({ user, setUser }) => {
     },
     {
       label: "Logout",
-      icon: <IconArrowLeft className="h-5 w-5 text-red-500" />,
+      icon: <MdLogout className="h-5 w-5 text-red-500" />,
       onClick: handleLogout,
     },
   ];
@@ -110,22 +111,29 @@ export default Dashboard;
 
 /* ================= LOGO ================= */
 
-const Logo = () => (
-  <div className="flex items-center gap-3 text-white">
-    <img
-      src="/logo.png"
-      alt="Clash Of Code"
-      className="h-13 w-13 object-contain"
-    />
-    <motion.span
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="font-semibold"
+const Logo = () => {
+  const navigate = useNavigate();
+
+  return (
+    <div
+      className="flex items-center gap-3 text-white cursor-pointer"
+      onClick={() => navigate("/")}
     >
-      Clash Of Code
-    </motion.span>
-  </div>
-);
+      <img
+        src="/logo.png"
+        alt="Clash Of Code"
+        className="h-13 w-13 object-contain"
+      />
+      <motion.span
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="font-semibold whitespace-nowrap text-xl  "
+      >
+        Clash Of Code
+      </motion.span>
+    </div>
+  );
+};
 
 const LogoIcon = () => (
   <motion.img

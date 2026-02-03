@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 
 const GlobalCursor = () => {
   const cursorRef = useRef(null);
+  const isVisible = useRef(false);
 
   useEffect(() => {
     const cursor = cursorRef.current;
@@ -15,20 +16,33 @@ const GlobalCursor = () => {
       width: 20,
       height: 20,
       borderRadius: "50%",
+      opacity: 0,
+      scale: 0,
     });
 
     const moveCursor = (e) => {
+      if (!isVisible.current) {
+        gsap.to(cursor, {
+          scale: 1,
+          opacity: 1,
+          duration: 0.2,
+          ease: "power2.out",
+        });
+        isVisible.current = true;
+      }
+
       gsap.to(cursor, {
         x: e.clientX,
         y: e.clientY,
         duration: 0.15,
         ease: "power3.out",
+        overwrite: "auto", 
       });
     };
 
     const expandCursor = () => {
       gsap.to(cursor, {
-        width: 40, // expanded size on click
+        width: 40,
         height: 40,
         duration: 0.2,
         ease: "power3.out",
@@ -43,12 +57,36 @@ const GlobalCursor = () => {
       });
     };
 
+    const handleMouseLeave = () => {
+      isVisible.current = false;
+      gsap.to(cursor, {
+        scale: 0,
+        opacity: 0,
+        duration: 0.2,
+        ease: "power2.in",
+      });
+    };
+
+    const handleMouseEnter = () => {
+      isVisible.current = true;
+      gsap.to(cursor, {
+        scale: 1,
+        opacity: 1,
+        duration: 0.2,
+        ease: "power2.out",
+      });
+    };
+
     window.addEventListener("mousemove", moveCursor);
     window.addEventListener("mousedown", expandCursor);
+    document.addEventListener("mouseleave", handleMouseLeave);
+    document.addEventListener("mouseenter", handleMouseEnter);
 
     return () => {
       window.removeEventListener("mousemove", moveCursor);
       window.removeEventListener("mousedown", expandCursor);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+      document.removeEventListener("mouseenter", handleMouseEnter);
     };
   }, []);
 

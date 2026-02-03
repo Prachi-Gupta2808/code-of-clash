@@ -8,6 +8,10 @@
   --c4: #F2613F;
 }
 
+.crsr {
+  cursor: url('/frontend/public/cursor-pointer.png') 8 8, auto;
+}
+
 .luck {
   font-family: "Luckiest Guy", cursive;
   font-weight: 200;
