@@ -1,7 +1,7 @@
 const User = require("../models/User.model");
 const FriendRequest = require("../models/FriendRequest.model");
 const ChallengeRequest = require("../models/ChallengeRequest.model");
-const ActiveDay = require("../models/ActiveDay.model");
+const ActiveDay = require("../models/ActiveDays.model");
 
 // Get sare dosts
 
@@ -109,7 +109,7 @@ exports.acceptFriendRequest = async (req, res) => {
   }
 };
 
-// Get incoming and accepted requests
+// Get incoming
 
 exports.getFriendRequests = async (req, res) => {
   try {
@@ -118,12 +118,7 @@ exports.getFriendRequests = async (req, res) => {
       status: "pending",
     }).populate("fromUser", "username fullName title rating avatar");
 
-    const acceptedReqs = await FriendRequest.find({
-      fromUser: req.user.id,
-      status: "accepted",
-    }).populate("toUser", "fullName");
-
-    res.status(200).json({ incomingReqs, acceptedReqs });
+    res.status(200).json({ incomingReqs });
   } catch (error) {
     console.log("Error in getFriendRequests", error.message);
     res.status(500).json({ message: "Internal Server Error" });
@@ -362,7 +357,7 @@ exports.getChallengeRequest = async (req, res) => {
 exports.updateActiveDays = async (req, res) => {
   try {
     const userId = req.user.id;
-    const date = new Date().toISOString().split("T")[0] ;
+    const date = new Date().toISOString().split("T")[0];
 
     const currentDayRecord = await ActiveDay.findOneAndUpdate(
       { userId, date },
@@ -370,9 +365,9 @@ exports.updateActiveDays = async (req, res) => {
         $inc: { submissionCount: 1 },
         $setOnInsert: { userId, date },
       },
-      { upsert: true , new: true },
+      { upsert: true, new: true }
     );
-    res.status(201).send(currentDayRecord) ;
+    res.status(201).send(currentDayRecord);
   } catch (error) {
     console.log("Error in updateActiveDays controller", error.message);
     res.status(500).json({ message: "Internal Server Error" });
@@ -390,6 +385,68 @@ exports.getActiveDays = async (req, res) => {
     res.status(200).json(activeDays);
   } catch (error) {
     console.log("Error in getActiveDays controller", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+// Search users globally
+
+exports.searchUsers = async (req, res) => {
+  try {
+    const myId = req.user.id;
+    const { q } = req.query;
+
+    if (!q || q.trim() === "") {
+      return res.status(400).json({ message: "Search query is required" });
+    }
+
+    const me = await User.findById(myId).select("friendList");
+
+    const users = await User.find({
+      _id: {
+        $ne: myId,
+        $nin: me.friendList,
+      },
+      $or: [
+        { username: { $regex: q, $options: "i" } },
+        { fullName: { $regex: q, $options: "i" } },
+        { title: { $regex: q, $options: "i" } },
+      ],
+    })
+      .select("username fullName title rating avatar")
+      .limit(20);
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.log("Error in searchUsers", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+// controllers/dashboardController.js
+
+exports.cancelPendingRequest = async (req, res) => {
+  try {
+    const { id: requestId } = req.params;
+    const myId = req.user.id;
+
+    const request = await FriendRequest.findOne({
+      _id: requestId,
+      fromUser: myId,
+      status: "pending",
+    });
+
+    if (!request) {
+      return res.status(404).json({ message: "Pending request not found" });
+    }
+
+    await FriendRequest.findByIdAndDelete(requestId);
+
+    res.status(200).json({
+      message: "Friend request cancelled successfully",
+    });
+  } catch (error) {
+    console.error("Error in cancelPendingRequest:", error.message);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };

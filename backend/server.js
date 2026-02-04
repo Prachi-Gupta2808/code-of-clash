@@ -13,6 +13,7 @@ require("./src/libs/db.js");
 const authRoutes = require("./src/routes/authRoutes");
 const { uploadAvatar } = require("./src/controllers/uploadController.js");
 const { addQuestion } = require("./src/controllers/adminController.js");
+const dashboardRoutes = require("./src/routes/dashboardRoutes");
 
 const PORT = process.env.PORT || 5000;
 
@@ -35,6 +36,7 @@ app.use(
 app.use("/api/auth", authRoutes);
 app.post("/api/upload/avatar", protect, uploadAvatar);
 app.post("/api/upload/question", protect, addQuestion);
+app.use("/api/dashboard", dashboardRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

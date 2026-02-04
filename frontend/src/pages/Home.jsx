@@ -1,14 +1,17 @@
 "use client";
 
+import { useAuth } from "@/auth/AuthContext";
 import ExpandingPanels from "@/components/ExpandingPanels";
+import Footer from "@/components/Footer";
+import TwoPhotos from "@/components/ProfileCards";
+import ScrollReview from "@/components/ScrollReview";
+import ScrollStatsSection from "@/components/ScrollStatsSection";
 import { MaskContainer } from "@/components/ui/svg-mask-effect";
-import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { FaPlay } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-import "./HomePage.css";
-import { useAuth } from "@/auth/AuthContext";
 import { logout } from "../api/auth";
+import "./HomePage.css";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -19,7 +22,8 @@ const Home = () => {
   const [profileOpen, setProfileOpen] = useState(false);
   const profileRef = useRef(null);
 
-  // Close dropdown when clicking outside
+  const scrollRef = useRef(null);
+
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (profileRef.current && !profileRef.current.contains(e.target)) {
@@ -30,7 +34,6 @@ const Home = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // 🔴 LOGOUT
   const handleLogout = async () => {
     try {
       await logout();
@@ -44,7 +47,10 @@ const Home = () => {
   };
 
   return (
-    <div className="w-full h-screen relative bg-transparent overflow-x-hidden overflow-y-auto">
+    <div
+      ref={scrollRef}
+      className="w-full h-screen relative bg-transparent overflow-x-hidden overflow-y-auto"
+    >
       <div className="top-container mb-25">
         <div className="hero w-full h-screen flex justify-center items-center relative">
           {/* Heading */}
@@ -71,7 +77,7 @@ const Home = () => {
             <div className="absolute w-40 h-20 bottom-20 right-10 md:bottom-0 md:right-0 bg-[#0C0C0C] z-10" />
           </div>
 
-          {/* ================= PROFILE / AUTH ================= */}
+          {/* PROFILE / AUTH — unchanged */}
           <div className="absolute top-5 right-10 z-20" ref={profileRef}>
             {isLoggedIn ? (
               <div className="relative">
@@ -83,7 +89,6 @@ const Home = () => {
                     shadow-[0_0_15px_rgba(242,97,63,0.6)]"
                   onClick={() => setProfileOpen((p) => !p)}
                 />
-
                 {profileOpen && (
                   <div
                     className="absolute right-0 mt-3 w-56 rounded-xl
@@ -99,27 +104,18 @@ const Home = () => {
                         {user?.username || "Coder"}
                       </p>
                     </div>
-
                     <button
                       className="w-full text-left px-4 py-2 text-white hover:bg-white/10"
-                      onClick={() => {
-                        setProfileOpen(false);
-                        navigate("/dashboard");
-                      }}
+                      onClick={() => navigate("/dashboard")}
                     >
                       Dashboard
                     </button>
-
                     <button
                       className="w-full text-left px-4 py-2 text-white hover:bg-white/10"
-                      onClick={() => {
-                        setProfileOpen(false);
-                        navigate("/contact");
-                      }}
+                      onClick={() => navigate("/contact")}
                     >
                       Contact Us
                     </button>
-
                     <div className="border-t border-white/10 mt-1">
                       <button
                         className="w-full text-left px-4 py-2 text-red-400 hover:bg-red-500/10"
@@ -161,17 +157,14 @@ const Home = () => {
             <FaPlay className="text-[20px]" />
             Play Now
           </button>
-
           <h1 className="text-lg text-white poppins-regular">
             Coding platform like never before!
           </h1>
         </div>
       </div>
 
-      {/* ================= EXPANDING PANELS ================= */}
       <ExpandingPanels />
 
-      {/* ================= MASK ================= */}
       <div className="relative w-full min-h-screen">
         <MaskContainer
           revealText={
@@ -193,6 +186,10 @@ const Home = () => {
           </div>
         </MaskContainer>
       </div>
+      <ScrollStatsSection scrollRef={scrollRef} />
+      <ScrollReview scrollRef={scrollRef} />
+      <TwoPhotos />
+      <Footer />
     </div>
   );
 };

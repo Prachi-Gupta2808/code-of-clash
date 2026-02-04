@@ -1,9 +1,9 @@
 import { GoogleLogin } from "@react-oauth/google";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Vortex } from "../components/ui/vortex";
-import { login, googleAuth, getMe } from "../api/auth";
+import { getMe, googleAuth, login } from "../api/auth";
 import { useAuth } from "../auth/AuthContext";
+import { Vortex } from "../components/ui/vortex";
 
 const Login = () => {
   const navigate = useNavigate();
