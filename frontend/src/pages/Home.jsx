@@ -195,7 +195,7 @@ const Home = () => {
         <h1 className="text-center text-5xl md:text-7xl lg:text-[90px] font-bold text-black dark:text-white leading-[1.1] tracking-tight">
           What our users say <br className="hidden md:block" />
           <span className="text-[#F2613F]">about</span>{" "}
-          <span className="text-[#F2613F]">us !!</span>
+          <span className="text-[#F2613F]">us</span>
         </h1>
       </div>
       

@@ -76,7 +76,7 @@ export default function FantasticScrollSection() {
             </span>
           </motion.div>
           <h1 className="mt-6 text-5xl md:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-linear-to-b from-white via-white to-neutral-500">
-            Code like it's <br/> <span className="text-[#F2613F]">2077.</span>
+            Code like it's <br/> <span className="text-[#F2613F]">2077</span>
           </h1>
         </div>
 
@@ -155,15 +155,17 @@ const FeatureTextCard = ({ feature, index, setActiveCard }) => {
       transition={{ duration: 0.5 }}
       className="h-[60vh] lg:h-screen flex flex-col justify-center px-4 md:px-12"
     >
-      <div className={`w-12 h-12 rounded-lg bg-linear-to-br ${feature.gradient} flex items-center justify-center mb-6 shadow-lg shadow-${feature.gradient.split('-')[1]}-500/20`}>
-        {index === 0 && <Swords className="text-white" size={24} />}
-        {index === 1 && <Trophy className="text-white" size={24} />}
-        {index === 2 && <Terminal className="text-white" size={24} />}
-        {index === 3 && <Activity className="text-white" size={24} />}
+      <div className="common_heading flex flex-row items-center gap-5">
+        <div className={`w-12 h-12 rounded-lg bg-linear-to-br ${feature.gradient} flex items-center justify-center mb-5 shadow-lg shadow-${feature.gradient.split('-')[1]}-500/20`}>
+          {index === 0 && <Swords className="text-white" size={24} />}
+          {index === 1 && <Trophy className="text-white" size={24} />}
+          {index === 2 && <Terminal className="text-white" size={24} />}
+          {index === 3 && <Activity className="text-white" size={24} />}
+        </div>
+        <h3 className="text-4xl md:text-5xl font-bold mb-6 text-white leading-tight">
+          {feature.title}
+        </h3>
       </div>
-      <h3 className="text-4xl md:text-5xl font-bold mb-6 text-white leading-tight">
-        {feature.title}
-      </h3>
       <p className="text-lg text-neutral-400 leading-relaxed max-w-md">
         {feature.description}
       </p>
