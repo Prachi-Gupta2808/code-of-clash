@@ -22,8 +22,8 @@ const FEATURES = [
   {
     id: "elo",
     title: "Smart Ranking",
-    description: "Your ELO evolves instantly. Beat higher-ranked players to climb the leaderboard faster.",
-    highlight: "ELO +24",
+    description: "Your Rating evolves instantly. Beat higher-ranked players to climb the leaderboard faster.",
+    highlight: "Rating +24",
     gradient: "from-blue-500 to-cyan-500",
   },
   {
@@ -192,7 +192,7 @@ const VisualElo = () => (
         <Trophy className="text-yellow-500 mx-auto drop-shadow-[0_0_15px_rgba(234,179,8,0.5)]" size={64} />
         <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: "spring" }} className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">NEW</motion.div>
       </div>
-      <div className="mt-4 flex flex-col gap-1"><span className="text-4xl font-black text-white">1,420</span><span className="text-sm text-neutral-400 font-mono">PLATINUM II</span></div>
+      <div className="mt-4 flex flex-col gap-1"><span className="text-4xl font-black text-white">1,420</span><span className="text-sm text-neutral-400 font-mono">Specialist</span></div>
       <div className="mt-6 w-48 h-1.5 bg-neutral-800 rounded-full overflow-hidden mx-auto"><motion.div initial={{ width: 0 }} animate={{ width: "75%" }} transition={{ duration: 1, delay: 0.3 }} className="h-full bg-blue-500" /></div>
     </motion.div>
 );
@@ -207,7 +207,7 @@ const VisualCode = () => (
 
 const VisualStats = () => (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-end gap-2 h-32 w-full px-8">
-       {[40, 70, 30, 85, 50, 95].map((h, i) => (<motion.div key={i} initial={{ height: 0 }} animate={{ height: `${h}%` }} transition={{ delay: i * 0.1, type: "spring", stiffness: 100 }} className={`flex-1 rounded-t-sm ${i === 5 ? 'bg-green-500' : 'bg-neutral-800'}`} />))}
+       {[40, 70, 30, 85, 50, 95].map((h, i) => (<motion.div key={i} initial={{ height: 0 }} animate={{ height: `${h}%` }} transition={{ delay: i * 0.1, type: "spring", stiffness: 100 }} className={`flex-1 rounded-t-sm ${i === 5 ? 'bg-green-500' : 'bg-[#59826964]'}`} />))}
     </motion.div>
 );
 
